@@ -30,7 +30,7 @@ def do_auto_flush_data(logger, sql_file_name):
     # SQL
     with open(sql_file_path, 'r', encoding='utf-8') as f:
         sql_file_content = f.read()
-    # logger.debug(sql_file_content)
+    logger.debug("原始刷数据的SQL为" + sql_file_content)
     # 查询需要刷的数据的行数
     count_sql = """
     select count(1) as sql_count from (
@@ -45,8 +45,7 @@ def do_auto_flush_data(logger, sql_file_name):
     if sql_count < 1:
         logger.debug("并没有需要刷的数据")
         return
-
-    actual_flush_data_count = count_result[0]["sql_count"]
+    logger.debug("即将自动刷的数据行数为: %s" % (str(sql_count)))
     # 查询刷数据的实际update语句行
     actual_update_sql_result = mymysql.query(mysql_config, sql_file_content)
     # 转换为update sql 数组

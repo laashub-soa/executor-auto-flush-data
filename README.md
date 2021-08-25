@@ -9,3 +9,19 @@ GRANT SELECT, SHOW VIEW, UPDATE ON deliveryapp.* TO 'executor_auto_flush_data'@'
 flush privileges;
 ```
 
+
+
+构建镜像
+
+```
+yum install -y wegt unzip
+mkdir test1 && cd test1
+wget https://github.com/laashub-soa/executor-auto-flush-data/archive/refs/heads/main.zip
+unzip main.zip
+cd executor-auto-flush-data
+
+docker build -t tanshilindocker/executor-auto-flush-data:0.0.1 -f deploy/Dockerfile .
+docker login  --username="" --password=""
+docker push  tanshilindocker/executor-auto-flush-data:0.0.1
+```
+

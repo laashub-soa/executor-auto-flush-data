@@ -1,6 +1,7 @@
 # 后端
 FROM python:3.7
 WORKDIR /usr/src/app
+RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 RUN rm -rf *
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt

@@ -20,8 +20,8 @@ wget https://github.com/laashub-soa/executor-auto-flush-data/archive/refs/heads/
 unzip main.zip
 cd executor-auto-flush-data-main
 
-docker build -t tanshilindocker/executor-auto-flush-data:0.0.1 -f deploy/Dockerfile .
+docker build -t tanshilindocker/executor-auto-flush-data:0.0.2 -f deploy/Dockerfile .
 docker login  --username="" --password=""
-docker push  tanshilindocker/executor-auto-flush-data:0.0.1
+docker push  tanshilindocker/executor-auto-flush-data:0.0.2
 ```
 

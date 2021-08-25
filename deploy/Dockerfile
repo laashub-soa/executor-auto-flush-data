@@ -11,4 +11,5 @@ RUN find . -name "*.py" |xargs rm -rf
 # 声明
 MAINTAINER tristan "https://github.com/laashub-soa/executor-auto-flush-data"
 VOLUME /usr/src/app/configs
+VOLUME /usr/src/app/service_data
 CMD [ "python", "./setup.pyc" ]

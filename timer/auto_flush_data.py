@@ -64,8 +64,6 @@ def auto_flush_data(sql_file_name):
     logger.setLevel(logging.DEBUG)
     is_continue = True
     while is_continue:
-        time.sleep(30 * 60)  # 每隔30min钟刷一下数据
-        # time.sleep(3)  # 每隔3s钟刷一下数据
         try:
             start_time = int(time.time())
             change_result = do_auto_flush_data(logger, sql_file_name)
@@ -81,3 +79,5 @@ def auto_flush_data(sql_file_name):
             post_alarm(logger, "自动刷数据: " + sql_file_name + "-由于文件变动已退出运行")
             # 这里需要
             is_continue = False
+        time.sleep(30 * 60)  # 每隔30min钟刷一下数据
+        # time.sleep(3)  # 每隔3s钟刷一下数据

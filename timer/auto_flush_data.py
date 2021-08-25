@@ -65,7 +65,8 @@ def auto_flush_data(sql_file_name):
     logger.setLevel(logging.DEBUG)
     is_continue = True
     while is_continue:
-        time.sleep(3)  # 每隔3s钟刷一下数据
+        time.sleep(30 * 60)  # 每隔30min钟刷一下数据
+        # time.sleep(3)  # 每隔3s钟刷一下数据
         try:
             start_time = int(time.time())
             change_result = do_auto_flush_data(logger, sql_file_name)

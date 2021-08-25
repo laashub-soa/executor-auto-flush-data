@@ -26,7 +26,7 @@ def do_auto_flush_data(logger, sql_file_name):
     # 数据库名称
     with open(sql_db_file_path, 'r', encoding='utf-8') as f:
         sql_db = f.read()
-    mysql_config["database"] = sql_db
+    mysql_config["database"] = sql_db.strip().replace("\n", "").replace("\t", "").replace("\r", "")
     # SQL
     with open(sql_file_path, 'r', encoding='utf-8') as f:
         sql_file_content = f.read()
@@ -75,8 +75,10 @@ def auto_flush_data(sql_file_name):
         except Exception as e:
             import traceback, sys
             traceback.print_exc()  # 打印异常信息
-            logger.debug("由于文件变动已退出运行")
-            post_alarm(logger, "自动刷数据: " + sql_file_name + "-由于文件变动已退出运行")
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            error = "任务退出: " + str(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
+            logger.debug(error)
+            post_alarm(logger, "自动刷数据: " + sql_file_name + error)
             # 这里需要
             is_continue = False
         time.sleep(30 * 60)  # 每隔30min钟刷一下数据

@@ -47,9 +47,9 @@ def change(mysql_config, sql):
         sql = [sql]
     execute_result = []
     connection = get_connection(mysql_config)
-    with connection:
-        with connection.cursor() as cursor:
-            for idx, item in enumerate(sql):
+    for idx, item in enumerate(sql):
+        with connection:
+            with connection.cursor() as cursor:
                 num = cursor.execute(item)
                 # num = cursor.execute(item, params)
                 if not num:
@@ -57,8 +57,5 @@ def change(mysql_config, sql):
                 if num > 0:
                     last_rowid = int(cursor.lastrowid)
                     execute_result = execute_result + list(range(last_rowid - num + 1, last_rowid + 1))
-                if idx % 500 == 0:
-                    connection.commit()
-                elif idx == len(sql) - 1:
-                    connection.commit()
+                connection.commit()
     return execute_result

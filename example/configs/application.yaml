@@ -3,7 +3,7 @@ dingding_webhook_access_token:
   - 1
 # 数据库配置
 mysql:
-  host:
+  host: 1
   port: 3306
-  username:
-  password:
+  user: executor_auto_flush_data
+  password: 1

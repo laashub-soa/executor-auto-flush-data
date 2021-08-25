@@ -15,7 +15,7 @@ flush privileges;
 
 ```
 yum install -y wegt unzip
-mkdir test1 && cd test1
+mkdir test1 && cd test1 && rm -rf main.zip executor-auto-flush-data-main
 wget https://github.com/laashub-soa/executor-auto-flush-data/archive/refs/heads/main.zip
 unzip main.zip
 cd executor-auto-flush-data

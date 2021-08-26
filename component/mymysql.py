@@ -46,8 +46,8 @@ def change(mysql_config, sql):
     if not isinstance(sql, list):
         sql = [sql]
     execute_result = []
-    connection = get_connection(mysql_config)
     for idx, item in enumerate(sql):
+        connection = get_connection(mysql_config)
         with connection:
             with connection.cursor() as cursor:
                 num = cursor.execute(item)

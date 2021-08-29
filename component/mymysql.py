@@ -1,3 +1,5 @@
+import time
+
 import pymysql.cursors
 
 
@@ -58,4 +60,5 @@ def change(mysql_config, sql):
                     last_rowid = int(cursor.lastrowid)
                     execute_result = execute_result + list(range(last_rowid - num + 1, last_rowid + 1))
                 connection.commit()
+        time.sleep(1)
     return execute_result

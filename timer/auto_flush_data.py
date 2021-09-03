@@ -72,14 +72,17 @@ def auto_flush_data(sql_file_name):
                 change_result_len = len(change_result)
                 post_alarm(logger,
                            "自动刷数据: " + sql_file_name + "-运行成功: 成功自动刷%s条数据动作, 过程花费%s秒钟" % (change_result_len, took_time))
+                # logger.debug("自动刷数据: " + sql_file_name + "-运行成功: 成功
+                # 自动刷%s条数据动作, 过程花费%s秒钟" % (change_result_len, took_time))
         except Exception as e:
             import traceback, sys
             traceback.print_exc()  # 打印异常信息
             exc_type, exc_value, exc_traceback = sys.exc_info()
             error = "任务退出: " + str(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
             logger.debug(error)
+            # logger.debug("自动刷数据: " + sql_file_name + error)
             post_alarm(logger, "自动刷数据: " + sql_file_name + error)
             # 这里需要
             is_continue = False
         time.sleep(30 * 60)  # 每隔30min钟刷一下数据
-        # time.sleep(3)  # 每隔3s钟刷一下数据
+        # time.sleep(1)  # 每隔3s钟刷一下数据

@@ -54,11 +54,11 @@ def change(mysql_config, sql):
             with connection.cursor() as cursor:
                 num = cursor.execute(item)
                 # num = cursor.execute(item, params)
-                if not num:
+                if num is None:
                     raise Exception("SQL执行异常, 请检查SQL语句以及两边的数据库表结构字段类型及长度")
                 if num > 0:
                     last_rowid = int(cursor.lastrowid)
                     execute_result = execute_result + list(range(last_rowid - num + 1, last_rowid + 1))
                 connection.commit()
-        time.sleep(1)
+        time.sleep(0.5)
     return execute_result

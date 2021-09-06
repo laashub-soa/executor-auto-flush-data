@@ -49,8 +49,8 @@ def change(mysql_config, sql):
         sql = [sql]
     execute_result = []
     connection = get_connection(mysql_config)
-    for idx, item in enumerate(sql):
-        with connection:
+    with connection:
+        for idx, item in enumerate(sql):
             with connection.cursor() as cursor:
                 num = cursor.execute(item)
                 # num = cursor.execute(item, params)

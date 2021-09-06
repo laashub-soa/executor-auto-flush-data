@@ -22,7 +22,7 @@ def do_auto_flush_data(logger, sql_file_name):
     sql_db_file_path = os.path.join(project_root_path, "service_data", sql_file_name + ".db")
     if not (os.path.exists(sql_file_path) and os.path.exists(sql_db_file_path)):
         logger.debug("任务的SQL文件或者数据名称声明文件不存在")
-        raise Exception("任务的SQL文件或者数据名称声明文件不存在")
+        return False, 0
     # 数据库名称
     with open(sql_db_file_path, 'r', encoding='utf-8') as f:
         sql_db = f.read()
@@ -40,11 +40,11 @@ def do_auto_flush_data(logger, sql_file_name):
     count_result = mymysql.query(mysql_config, count_sql)
     if len(count_result) < 1:
         logger.debug("并没有需要刷的数据")
-        return
+        return True, 0
     sql_count = count_result[0]["sql_count"]
     if sql_count < 1:
         logger.debug("并没有需要刷的数据")
-        return
+        return True, 0
     logger.debug("即将自动刷的数据行数为: %s" % (str(sql_count)))
     # 查询刷数据的实际update语句行
     actual_update_sql_result = mymysql.query(mysql_config, sql_file_content)
@@ -56,7 +56,7 @@ def do_auto_flush_data(logger, sql_file_name):
     logger.debug(actual_update_sql_result)
     change_result = mymysql.change(mysql_config, update_sql_list)
     logger.debug(change_result)
-    return change_result
+    return True, change_result
 
 
 def auto_flush_data(sql_file_name):
@@ -66,9 +66,14 @@ def auto_flush_data(sql_file_name):
     while is_continue:
         try:
             start_time = int(time.time())
-            change_result = do_auto_flush_data(logger, sql_file_name)
-            took_time = int(time.time()) - start_time
+            is_continue, change_result = do_auto_flush_data(logger, sql_file_name)
+            if not is_continue:
+                exit_msg = "任务已退出"
+                logger.debug(exit_msg)
+                post_alarm(logger, "自动刷数据: " + exit_msg)
+                break
             if change_result:
+                took_time = int(time.time()) - start_time
                 change_result_len = len(change_result)
                 post_alarm(logger,
                            "自动刷数据: " + sql_file_name + "-运行成功: 成功自动刷%s条数据动作, 过程花费%s秒钟" % (change_result_len, took_time))
@@ -78,11 +83,10 @@ def auto_flush_data(sql_file_name):
             import traceback, sys
             traceback.print_exc()  # 打印异常信息
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            error = "任务退出: " + str(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
+            error = "任务异常: " + str(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
             logger.debug(error)
             # logger.debug("自动刷数据: " + sql_file_name + error)
             post_alarm(logger, "自动刷数据: " + sql_file_name + error)
-            # 这里需要
-            is_continue = False
+            time.sleep(10)  # 10s后重试
         time.sleep(30 * 60)  # 每隔30min钟刷一下数据
         # time.sleep(1)  # 每隔3s钟刷一下数据

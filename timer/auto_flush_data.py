@@ -76,7 +76,7 @@ def auto_flush_data(sql_file_name):
                 took_time = int(time.time()) - start_time
                 change_result_len = len(change_result)
                 post_alarm(logger,
-                           "自动刷数据: " + sql_file_name + "-运行成功: 成功自动刷%s条数据动作, 过程花费%s秒钟" % (change_result_len, took_time))
+                           "自动刷数据: " + sql_file_name + "-运行成功: 成功自动刷%s条数据, 过程花费%s秒钟" % (change_result_len, took_time))
                 # logger.debug("自动刷数据: " + sql_file_name + "-运行成功: 成功
                 # 自动刷%s条数据动作, 过程花费%s秒钟" % (change_result_len, took_time))
         except Exception as e:
